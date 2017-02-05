@@ -125,15 +125,15 @@ s = GoldenStock(False)
 # request = urllib2.Request(url="http://hxadmin.hx168.com.cn/hxwwz/sso/login",data=data_urlencode)
 # opener.open(request)
 
-headers = [
-			('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36'),
-			('Accept', 'application/json, text/javascript, */*'),
-			('Accept-Language', 'h-CN,zh;q=0.8'),
-			('Accept-Encoding', 'gzip, deflate, sdch'),
-			('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
-			('Cookie',"JSESSIONID=DC5F2006ED1EA9E5CB954F22931B91C5;HXTGC=TGC-150-MTQQfWdK3Q7KnaOxeOPJDxSvuC04oyTrSZXuEevTXlhozWhYtA"),
-			('Host', 'hxadmin.hx168.com.cn')
-		]
+# headers = [
+			# ('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36'),
+			# ('Accept', 'application/json, text/javascript, */*'),
+			# ('Accept-Language', 'h-CN,zh;q=0.8'),
+			# ('Accept-Encoding', 'gzip, deflate, sdch'),
+			# ('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
+			# ('Cookie',"JSESSIONID=DC5F2006ED1EA9E5CB954F22931B91C5;HXTGC=TGC-150-MTQQfWdK3Q7KnaOxeOPJDxSvuC04oyTrSZXuEevTXlhozWhYtA"),
+			# ('Host', 'hxadmin.hx168.com.cn')
+		# ]
 #1
 # opener = urllib2.build_opener()
 # request = urllib2.Request(url="http://hxadmin.hx168.com.cn/hxwwz/sso/login")
