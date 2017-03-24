@@ -43,7 +43,6 @@ class point(Crawler):
 			self.analyse(result['results'])
 		print 'cash_value total: ', point.stat['customPoint']
 		
-		
 headers = [
 	('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'),
 	('Accept', 'application/json, text/javascript, */*'),
@@ -52,10 +51,10 @@ headers = [
 	('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 	('X-Requested-With', 'XMLHttpRequest'),
 	('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/weixin/gaoshou/kh_cashdetail_yyb'),
-	('Cookie', 'JSESSIONID=8A4FBA53B70D3A2BFFA96A1F72789F32; HXTGC=TGC-168-F4XUfdnmpT6GFgKhcabSsWqdaUUy789Ul35JzQdSeb4qzwBdHh'),
+	('Cookie', 'JSESSIONID=1085403E279C0B1C3734E3EDAB754654; HXTGC=TGC-205-cdJXTeow4kkehqWEtpOdDbi92hfNeTlMpd002mKzRcz6g96HX5'),
 	('Host', 'hxadmin.hx168.com.cn')
 ]
-postData = {"dwbh":"-1","itemid":"-1","jystartdate":"2016-01-01 00:00:00", "jyenddate": '2017-01-01 00:00:00',"zflyjjrdm":'',"resource":'-1'}
+postData = {"dwbh":"-1","itemid":"-1","jystartdate":"2016-01-01 00:00:00", "jyenddate": '2016-04-01 00:00:00',"zflyjjrdm":'',"resource":'-1'}
 p = point(headers,postData,False)
 
 

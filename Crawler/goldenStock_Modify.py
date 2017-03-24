@@ -96,6 +96,7 @@ class GoldenStock(Crawler):
 	def analseRes(self,line):
 		id=line['event_id']
 		if id == '1':
+			print self.chinese(line['event'])
 			GoldenStock.stat['enterPage'] += 1
 		elif id == '2':
 			GoldenStock.stat['unlock'] += 1
@@ -186,10 +187,10 @@ headers = [
 	('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 	('X-Requested-With', 'XMLHttpRequest'),
 	('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-	('Cookie', 'JSESSIONID=EA341C04C3142C7FAC647442103BE163; HXTGC=TGC-5-8U8w8ootDll9Mc3FqwQxLUeAd2Kxwr76cnXIhAuT3e6pmur84e'),
+	('Cookie', 'JSESSIONID=449308FC9732C1E84F43C8E036E5213D; HXTGC=TGC-12-tUqKw5zcqtUV6DL3g3SAQhzdb8wmfr5E5nimxbKCFEK4bzgdCr'),
 	('Host', 'hxadmin.hx168.com.cn')
 ]
-postData = {"p_start":"2017-03-16","p_end":"2017-03-17"}
+postData = {"p_start":"2017-03-23","p_end":"2017-03-24"}
 
 s = GoldenStock(headers,postData,False)
 
