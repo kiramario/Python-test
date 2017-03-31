@@ -96,7 +96,6 @@ class GoldenStock(Crawler):
 	def analseRes(self,line):
 		id=line['event_id']
 		if id == '1':
-			print self.chinese(line['event'])
 			GoldenStock.stat['enterPage'] += 1
 		elif id == '2':
 			GoldenStock.stat['unlock'] += 1
@@ -144,6 +143,8 @@ class GoldenStock(Crawler):
 			for i in GoldenStock.csvHeaderKeys:
 				if GoldenStock.csvheaddict.has_key(i):
 					tdvalue = line[i]
+					if i == 'page_url' or i == 'referrer':
+						tdvalue = urllib.unquote(line[i])
 					csvbodyvalue.append(tdvalue)
 			writer.writerow(csvbodyvalue)
 			self.itemNo+=1
@@ -187,10 +188,10 @@ headers = [
 	('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 	('X-Requested-With', 'XMLHttpRequest'),
 	('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-	('Cookie', 'JSESSIONID=449308FC9732C1E84F43C8E036E5213D; HXTGC=TGC-12-tUqKw5zcqtUV6DL3g3SAQhzdb8wmfr5E5nimxbKCFEK4bzgdCr'),
+	('Cookie', 'JSESSIONID=6DE7C5B036A8B5230D345A97EEB8F65B; HXTGC=TGC-10-v8ILgondiIH2fnsZVqJaStah0iV6jymzPhdYUZcyKCNwZKdbGm'),
 	('Host', 'hxadmin.hx168.com.cn')
 ]
-postData = {"p_start":"2017-03-23","p_end":"2017-03-24"}
+postData = {"p_start":"2017-03-30","p_end":"2017-03-31"}
 
 s = GoldenStock(headers,postData,False)
 
