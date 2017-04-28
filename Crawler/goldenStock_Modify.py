@@ -171,7 +171,7 @@ headers = [
 	('Cookie', 'JSESSIONID=17CB2D608B923AD735FA6E0130ADECA8; HXTGC=TGC-18-u5kaI2Uqblpwmyck3U0uaJDa8WHfWvlyMh1Wr6jcilnMyduirE'),
 	('Host', 'hxadmin.hx168.com.cn')
 ]
-postData = {"p_start":"2017-04-27","p_end":"2017-04-28"}
+postData = {"p_start":"2017-04-27","p_end":"2017-04-30"}
 
 s = GoldenStock(headers,postData,False)
 
