@@ -1,47 +1,12 @@
 ﻿# -*- coding: UTF-8 -*-
-import urllib,urllib2,json,csv,math,re,datetime,os
-
-class Crawler(object):
-	def __init__(self,headers,proxy=True):
-		self.headers = headers
-		if proxy:
-			self.proxy = urllib2.ProxyHandler({'http':'127.0.0.1:8888'})
-			self.opener = urllib2.build_opener(self.proxy)
-		else:
-			self.opener = urllib2.build_opener()
-
-	def doSearch(self,requrl,data):
-		data_urlencode = urllib.urlencode(data)
-		request = urllib2.Request(url=requrl,data=data_urlencode)
-		self.opener.addheaders = self.headers
-		response = self.opener.open(request).read()
-		# self.writeInText(response)	#将结果写入txt
-		res = response.decode('gb2312')
-		resJson = json.loads(res)
-		return resJson
-		
-	def chinese(self,character):
-		if isinstance(character,unicode):
-			return character.encode('gb2312')
-		else:
-			return character.decode('utf-8').encode('gb2312')
-			
-	def writeInText(self,text):
-		filename="C:\\Users\\Administrator\\Desktop\\crawlerRes.txt"
-		if os.path.exists(filename):
-			os.remove(filename)
-		file_object = open(filename, 'w')
-		try:
-			file_object.write(text)
-		finally:
-			file_object.close()
-
-
+import urllib,urllib2,json,csv,math,re,datetime,os,time,sys
+from crawler import Crawler
 # 金股流水数据
 class GoldenStock(Crawler):
 	#定义用于统计分析的变量
 	stat = {'enterPage':0,'unlock':0,'unlock_noon':0,'unlock_mor':0,'unlockOK':0,'unlockCancel':0,'recharge':0,"articleUnlock":0,
-			'1_A_click': 0, '1_B_click': 0,'2_A_click': 0,'2_B_click': 0,'3_A_click': 0,'3_B_click': 0
+			'1_A_click_m': 0, '1_A_click_n':0, '1_B_click_m': 0, '1_B_click_n': 0, '2_A_click_m': 0, '2_A_click_n': 0, 
+			'2_B_click_m': 0, '2_B_click_n': 0, '3_A_click_m': 0, '3_A_click_n': 0, '3_B_click_m': 0,'3_B_click_n': 0
 	}
 	eventMap = {
 		"1": u"进入金股页面",
@@ -112,21 +77,23 @@ class GoldenStock(Crawler):
 		elif id == '7':
 			GoldenStock.stat['articleUnlock'] += 1
 		elif id == '10':
-			GoldenStock.stat['1_A_click'] += 1
-		elif id == '11':
-			GoldenStock.stat['1_B_click'] += 1
-		elif id == '12':
-			GoldenStock.stat['2_A_click'] += 1
-		elif id == '13':
-			GoldenStock.stat['2_B_click'] += 1
-		elif id == '14':
-			GoldenStock.stat['3_A_click'] += 1
-		elif id == '15':
-			GoldenStock.stat['3_B_click'] += 1
+			if line['channel'] == 'recommend_noon_message':
+				GoldenStock.stat['1_A_click_n'] += 1
+			elif line['channel'] == '' and ( urllib.unquote(line['page_url']) == 'http://wx.hx168.com.cn/hxwwz/rest/json/gaoshou/info/param/page/recommend?sd=20170406' or urllib.unquote(line['page_url'])=='http://wx.hx168.com.cn/hxwwz/rest/json/gaoshou/info/param/page/recommend?source=weixin&sd=20170406'):
+				GoldenStock.stat['1_A_click_m'] += 1
+		# elif id == '11':
+			# GoldenStock.stat['1_B_click'] += 1
+		# elif id == '12':
+			# GoldenStock.stat['2_A_click'] += 1
+		# elif id == '13':
+			# GoldenStock.stat['2_B_click'] += 1
+		# elif id == '14':
+			# GoldenStock.stat['3_A_click'] += 1
+		# elif id == '15':
+			# GoldenStock.stat['3_B_click'] += 1
 			
 	def doWriteCsv(self,result):
 		resultItems = result[0].keys()
-		
 		writer = csv.writer(file(self.csvname,"ab+"))
 		if not self.csvHeader:
 			GoldenStock.csvHeaderKeys.extend(result[0].keys())
@@ -151,13 +118,20 @@ class GoldenStock(Crawler):
 			
 	def outputRes(self):
 		print u"解锁总数: ", GoldenStock.stat['unlock']
-		print u"早评热点服务1_A解锁: ", GoldenStock.stat['unlock_mor']
-		print u"午评热点服务1_A解锁: ", GoldenStock.stat['unlock_noon']
-		print u"进入金股页面总数: ", GoldenStock.stat['enterPage']
+		
 		print u"解锁取消: ", GoldenStock.stat['unlockCancel']
 		print u"解锁确认: ", GoldenStock.stat['unlockOK']
-		print u"文章解锁: ", GoldenStock.stat['articleUnlock']
 		
+		print u"进入金股页面总数: ", GoldenStock.stat['enterPage']
+		
+		print u"-----------------------早评-------------------------------"
+		print u"早评：热点服务1_A点击次数", GoldenStock.stat['1_A_click_m']
+		print u"早评：金股解锁：通过热点服务1_A解锁: ", GoldenStock.stat['unlock_mor']
+		print u"------------------------午评------------------------------"
+		print u"午评：热点服务1_A点击次数", GoldenStock.stat['1_A_click_n']
+		print u"午评：金股解锁：通过热点服务1_A解锁: ", GoldenStock.stat['unlock_noon']
+		
+				
 	def getTotalRow(self):
 		data = self.data.copy()
 		data["page.pageNo"] = 1
@@ -171,7 +145,13 @@ class GoldenStock(Crawler):
 	def run(self):
 		index = self.getTotalRow()
 		if os.path.exists(self.csvname):
-			os.remove(self.csvname)
+			try:
+				os.remove(self.csvname)
+			except WindowsError, e:
+				print u'文件可能被其他程序占用了：message: %s' % e
+				time.sleep(1)
+				sys.exit(0)
+				
 		for i in range(1, index+1):
 			data = self.data.copy()
 			data["page.pageNo"] = i
@@ -188,10 +168,10 @@ headers = [
 	('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 	('X-Requested-With', 'XMLHttpRequest'),
 	('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-	('Cookie', 'JSESSIONID=6DE7C5B036A8B5230D345A97EEB8F65B; HXTGC=TGC-10-v8ILgondiIH2fnsZVqJaStah0iV6jymzPhdYUZcyKCNwZKdbGm'),
+	('Cookie', 'JSESSIONID=17CB2D608B923AD735FA6E0130ADECA8; HXTGC=TGC-18-u5kaI2Uqblpwmyck3U0uaJDa8WHfWvlyMh1Wr6jcilnMyduirE'),
 	('Host', 'hxadmin.hx168.com.cn')
 ]
-postData = {"p_start":"2017-03-30","p_end":"2017-03-31"}
+postData = {"p_start":"2017-04-27","p_end":"2017-04-28"}
 
 s = GoldenStock(headers,postData,False)
 
