@@ -3,7 +3,7 @@
 
 #分析进入热点页面
 def analyse_hot_service(line,stat_instance):
-	if line['attr'] == '{"id":"2833"}':
+	if line['attr'] == '{"id":"3022"}':
 		stat_instance.hot_service_pv += 1
 		if line['khid'] == '' or line['khid'] == '-1': 
 			stat_instance.hot_service_khid_unidentification += 1
@@ -12,7 +12,7 @@ def analyse_hot_service(line,stat_instance):
 
 #分析进入分享热点页面
 def analyse_hot_service_share(line,stat_instance):
-	if line['attr'] == '{"id":"2833"}':
+	if line['attr'] == '{"id":"3022"}':
 		stat_instance.hot_service_share_pv += 1
 		if line['khid'] == '' or line['khid'] == '-1':
 			stat_instance.hot_service_share_khid_unidentification += 1
@@ -21,7 +21,7 @@ def analyse_hot_service_share(line,stat_instance):
 			
 #分析解锁热点
 def analyse_hot_service_unlock(line,stat_instance):
-	if line['attr'] == '{"id":"2833"}':
+	if line['attr'] == '{"id":"3022"}':
 		stat_instance.hot_service_unlock_pv += 1
 		if line['khid'] == '' or line['khid'] == '-1':
 			stat_instance.hot_service_unlock_khid_unidentification += 1

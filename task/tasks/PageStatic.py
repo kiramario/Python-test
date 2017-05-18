@@ -1,9 +1,11 @@
 ﻿# -*- coding: UTF-8 -*-
 import urllib,urllib2,json,csv,math,re,datetime,os,time,sys
-import crawl,eventDict,analyse,tasks
+from task.crawl.crawler import Crawler
+import task.analyse.buryDataAnalyse as pageAnalyse
+from Pagestatic_indicator import StatIndication
 
 # 流水数据
-class PageStatic(crawl.crawler.Crawler):
+class PageStatic(Crawler):
 	
 	header = [
 		('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'),
@@ -13,12 +15,12 @@ class PageStatic(crawl.crawler.Crawler):
 		('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 		('X-Requested-With', 'XMLHttpRequest'),
 		('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-		('Cookie', 'JSESSIONID=E68F80A3B3C4F428B77B8F7F58EAD15E; HXTGC=TGC-19-aBWZHLb0LiXwOeJSvwHLHyG7MUgsh6OOGyRbnfc3yTOdhpEJlv'),
+		('Cookie', 'JSESSIONID=524F866179C5CE88EE7AF398B6984320; HXTGC=TGC-272-oaRCWndAhtDtAcrpL1JY10JzqNhCdykLM8yQPPcHNFi3HLAq41'),
 		('Host', 'hxadmin.hx168.com.cn')
 	]
 
 	#定义用于统计分析的变量
-	stat = tasks.staticIndicator.StatIndication()
+	stat = StatIndication()
 	
 	csvHeaderKeys = []
 	
@@ -28,12 +30,10 @@ class PageStatic(crawl.crawler.Crawler):
 		self.csvHeader = False
 		self.pageSize = 2000
 		self.itemNo = 1;
-		self.csvname="C:\\Users\\Administrator\\Desktop\\goldenStock.csv"
+		self.csvname="C:\\Users\\Administrator\\Desktop\\" + self.data['p_start'] + "~~" + self.data['p_end'] + ".csv"
 		self.requrl = "http://hxadmin.hx168.com.cn/hxwwz/s/commfuncPaging/execute/42000001/json?p_operator=H"
 		#计算时间
 		begin = datetime.datetime.now()
-		# eventDict_instance = eventDict.EventDict()
-		# self.eventMap = eventDict_instance.analyse()
 		self.run()
 		end = datetime.datetime.now()
 		print "begin: {0}, end: {1}, totalTime: {2}".format(begin,end,end-begin)
@@ -41,27 +41,27 @@ class PageStatic(crawl.crawler.Crawler):
 	def analseRes(self,resArray):
 		for line in resArray:
 			if line['event_id'] == '21':	#进入开户页面
-				analyse.buryDataAnalyse.analyse_hxaccount(line,PageStatic.stat)
+				pageAnalyse.analyse_hxaccount(line,PageStatic.stat)
 			elif line['event_id'] == '22':	#进入热点页面
-				analyse.buryDataAnalyse.analyse_hot_service(line,PageStatic.stat)
+				pageAnalyse.analyse_hot_service(line,PageStatic.stat)
 			elif line['event_id'] == '27':	#进入热点分享页面
-				analyse.buryDataAnalyse.analyse_hot_service_share(line,PageStatic.stat)
+				pageAnalyse.analyse_hot_service_share(line,PageStatic.stat)
 			elif line['event_id'] == '23':	#热点解锁
-				analyse.buryDataAnalyse.analyse_hot_service_unlock(line,PageStatic.stat)
+				pageAnalyse.analyse_hot_service_unlock(line,PageStatic.stat)
 			elif line['event_id'] == '36':	#业务推送
-				analyse.buryDataAnalyse.analyse_recommend(line,PageStatic.stat)
+				pageAnalyse.analyse_recommend(line,PageStatic.stat)
 			elif line['event_id'] == '10':	#服务模块1_A点击
-				analyse.buryDataAnalyse.analyse_service_1_areaA(line,PageStatic.stat)
+				pageAnalyse.analyse_service_1_areaA(line,PageStatic.stat)
 			elif line['event_id'] == '11':	#服务模块1_B点击
-				analyse.buryDataAnalyse.analyse_service_1_areaB(line,PageStatic.stat)
+				pageAnalyse.analyse_service_1_areaB(line,PageStatic.stat)
 			elif line['event_id'] == '12':	#服务模块2_A点击
-				analyse.buryDataAnalyse.analyse_service_2_areaA(line,PageStatic.stat)
+				pageAnalyse.analyse_service_2_areaA(line,PageStatic.stat)
 			elif line['event_id'] == '13':	#服务模块2_B点击
-				analyse.buryDataAnalyse.analyse_service_2_areaB(line,PageStatic.stat)
+				pageAnalyse.analyse_service_2_areaB(line,PageStatic.stat)
 			elif line['event_id'] == '14':	#服务模块3_A点击
-				analyse.buryDataAnalyse.analyse_service_3_areaA(line,PageStatic.stat)
+				pageAnalyse.analyse_service_3_areaA(line,PageStatic.stat)
 			elif line['event_id'] == '15':	#服务模块3_B点击
-				analyse.buryDataAnalyse.analyse_service_3_areaB(line,PageStatic.stat)
+				pageAnalyse.analyse_service_3_areaB(line,PageStatic.stat)
 
 	
 			
@@ -262,7 +262,7 @@ class PageStatic(crawl.crawler.Crawler):
 		PageStatic.stat.recommend_eve_service_3_areaB_uv = len(set(PageStatic.stat.recommend_eve_service_3_areaB_khid))	#服务模块3_B点击-晚评页面UV
 		
 		self.outputRes()
-postData = {"p_start":"2017-05-11","p_end":"2017-05-12"}
+postData = {"p_start":"2017-05-17","p_end":"2017-05-18"}
 
 s = PageStatic(postData)
 
