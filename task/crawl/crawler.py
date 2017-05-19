@@ -39,3 +39,25 @@ class Crawler(object):
 			file_object.write(text)
 		finally:
 			file_object.close()
+			
+	def getTotalRow(self):
+		data = self.data.copy()
+		data["page.pageNo"] = 1
+		data['page.pageSize'] = 1
+		result = self.doSearch(self.requrl,data)
+		totalRow = result["totalRow"]
+		totalIndex = int((totalRow+self.pageSize)/self.pageSize)
+		print u"查询到总流水: ", totalRow
+		return totalIndex
+		
+if __name__ == "__main__":
+	#test
+	a = {'1':'2'}
+
+		
+	print str(a)
+	pass
+	
+	
+	
+	

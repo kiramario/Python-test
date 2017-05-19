@@ -15,7 +15,7 @@ class PageStatic(Crawler):
 		('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 		('X-Requested-With', 'XMLHttpRequest'),
 		('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-		('Cookie', 'JSESSIONID=524F866179C5CE88EE7AF398B6984320; HXTGC=TGC-272-oaRCWndAhtDtAcrpL1JY10JzqNhCdykLM8yQPPcHNFi3HLAq41'),
+		('Cookie', 'JSESSIONID=C60C8B34D6804E42F67CB413EC9EF322; HXTGC=TGC-7-6xQWpIuOXGfqNhDKWjQrVCpqyRzpc0RaDLDmEc0QdmjmRFgQkF'),
 		('Host', 'hxadmin.hx168.com.cn')
 	]
 
@@ -262,7 +262,7 @@ class PageStatic(Crawler):
 		PageStatic.stat.recommend_eve_service_3_areaB_uv = len(set(PageStatic.stat.recommend_eve_service_3_areaB_khid))	#服务模块3_B点击-晚评页面UV
 		
 		self.outputRes()
-postData = {"p_start":"2017-05-17","p_end":"2017-05-18"}
+postData = {"p_start":"2017-05-18","p_end":"2017-05-19"}
 
 s = PageStatic(postData)
 
