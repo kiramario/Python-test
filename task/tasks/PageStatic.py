@@ -2,6 +2,7 @@
 import urllib,urllib2,json,csv,math,re,datetime,os,time,sys
 from task.crawl.crawler import Crawler
 import task.analyse.buryDataAnalyse as pageAnalyse
+from task.output.outputPageStatic import OutputPageStatic
 from Pagestatic_indicator import StatIndication
 
 # 流水数据
@@ -15,12 +16,13 @@ class PageStatic(Crawler):
 		('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 		('X-Requested-With', 'XMLHttpRequest'),
 		('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
-		('Cookie', 'JSESSIONID=C60C8B34D6804E42F67CB413EC9EF322; HXTGC=TGC-7-6xQWpIuOXGfqNhDKWjQrVCpqyRzpc0RaDLDmEc0QdmjmRFgQkF'),
+		('Cookie', 'JSESSIONID=3BB86C6BC2F95066684ACDD6740FAB08; HXTGC=TGC-628-YrVbvkw3DYmhtdQytzgWr9SpewZoR9sgPMz6q3ygEVhtJFBnLS'),
 		('Host', 'hxadmin.hx168.com.cn')
 	]
 
 	#定义用于统计分析的变量
 	stat = StatIndication()
+	output = OutputPageStatic()
 	
 	csvHeaderKeys = []
 	
@@ -87,118 +89,9 @@ class PageStatic(Crawler):
 			self.itemNo+=1
 			
 	def outputRes(self):
-		text = self.data['p_start'] + "~~~" + self.data['p_end'] + "\r\n\r\n"
-		#陈薇薇
-		text += u"进入热点PV： " + str(PageStatic.stat.hot_service_pv) + "\r\n"
-		text += u"进入热点UV： " + str(PageStatic.stat.hot_service_uv) + "\r\n"
-		text += u"进入热点UV(未识别)： " + str(PageStatic.stat.hot_service_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"热点解锁PV： " + str(PageStatic.stat.hot_service_unlock_pv) + "\r\n"
-		text += u"热点解锁UV： " + str(PageStatic.stat.hot_service_unlock_uv) + "\r\n"
-		text += u"热点解锁UV(未识别)： " + str(PageStatic.stat.hot_service_unlock_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"进入热点分享PV： " + str(PageStatic.stat.hot_service_share_pv) + "\r\n"
-		text += u"进入热点分享UV： " + str(PageStatic.stat.hot_service_share_uv) + "\r\n"
-		text += u"进入热点分享UV(未识别)： " + str(PageStatic.stat.hot_service_share_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n\r\n"
-		
-		#曾属民
-		text += u"进入开户页面PV： " + str(PageStatic.stat.hxaccount_pv) + "\r\n"
-		text += u"进入开户页面UV： " + str(PageStatic.stat.hxaccount_uv) + "\r\n"
-		text += u"进入开户页面UV(未识别)： " + str(PageStatic.stat.hxaccount_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n\r\n"
-		
-		#李岳峰
-		text += u"进入早评PV： " + str(PageStatic.stat.recommend_enter_pv) + "\r\n"
-		text += u"进入早评UV： " + str(PageStatic.stat.recommend_enter_uv) + "\r\n"
-		text += u"进入早评UV(未识别)： " + str(PageStatic.stat.recommend_enter_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"进入午评PV： " + str(PageStatic.stat.recommend_noon_enter_pv) + "\r\n"
-		text += u"进入午评UV： " + str(PageStatic.stat.recommend_noon_enter_uv) + "\r\n"
-		text += u"进入无评UV(未识别)： " + str(PageStatic.stat.recommend_noon_enter_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"进入晚评PV： " + str(PageStatic.stat.recommend_eve_enter_pv) + "\r\n"
-		text += u"进入晚评UV： " + str(PageStatic.stat.recommend_eve_enter_uv) + "\r\n"
-		text += u"进入晚评UV(未识别)： " + str(PageStatic.stat.recommend_eve_enter_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n\r\n"
-		
-		
-		
-		text += u"服务模块1_A点击-早评PV： " + str(PageStatic.stat.recommend_service_1_areaA_pv) + "\r\n"
-		text += u"服务模块1_A点击-早评UV： " + str(PageStatic.stat.recommend_service_1_areaA_uv) + "\r\n"
-		text += u"服务模块1_A点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_1_areaA_khid_unidentification) + "\r\n"
-		text += "===============================================================" + "\r\n"
-		text += u"服务模块1_A点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_1_areaA_pv) + "\r\n"
-		text += u"服务模块1_A点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_1_areaA_uv) + "\r\n"
-		text += u"服务模块1_A点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_1_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块1_A点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_1_areaA_pv) + "\r\n"
-		text += u"服务模块1_A点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_1_areaA_uv) + "\r\n"
-		text += u"服务模块1_A点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_1_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块1_B点击-早评PV： " + str(PageStatic.stat.recommend_service_1_areaB_pv) + "\r\n"
-		text += u"服务模块1_B点击-早评UV： " + str(PageStatic.stat.recommend_service_1_areaB_uv) + "\r\n"
-		text += u"服务模块1_B点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_1_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块1_B点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_1_areaB_pv) + "\r\n"
-		text += u"服务模块1_B点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_1_areaB_uv) + "\r\n"
-		text += u"服务模块1_B点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_1_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块1_B点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_1_areaB_pv) + "\r\n"
-		text += u"服务模块1_B点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_1_areaB_uv) + "\r\n"
-		text += u"服务模块1_B点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_1_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-
-		text += u"服务模块2_A点击-早评PV： " + str(PageStatic.stat.recommend_service_2_areaA_pv) + "\r\n"
-		text += u"服务模块2_A点击-早评UV： " + str(PageStatic.stat.recommend_service_2_areaA_uv) + "\r\n"
-		text += u"服务模块2_A点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_2_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块2_A点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_2_areaA_pv) + "\r\n"
-		text += u"服务模块2_A点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_2_areaA_uv) + "\r\n"
-		text += u"服务模块2_A点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_2_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块2_A点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_2_areaA_pv) + "\r\n"
-		text += u"服务模块2_A点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_2_areaA_uv) + "\r\n"
-		text += u"服务模块2_A点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_2_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块2_B点击-早评PV： " + str(PageStatic.stat.recommend_service_2_areaB_pv) + "\r\n"
-		text += u"服务模块2_B点击-早评UV： " + str(PageStatic.stat.recommend_service_2_areaB_uv) + "\r\n"
-		text += u"服务模块2_B点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_2_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块2_B点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_2_areaB_pv) + "\r\n"
-		text += u"服务模块2_B点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_2_areaB_uv) + "\r\n"
-		text += u"服务模块2_B点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_2_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块2_B点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_2_areaB_pv) + "\r\n"
-		text += u"服务模块2_B点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_2_areaB_uv) + "\r\n"
-		text += u"服务模块2_B点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_2_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-
-		text += u"服务模块3_A点击-早评PV： " + str(PageStatic.stat.recommend_service_3_areaA_pv) + "\r\n"
-		text += u"服务模块3_A点击-早评UV： " + str(PageStatic.stat.recommend_service_3_areaA_uv) + "\r\n"
-		text += u"服务模块3_A点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_3_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块3_A点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_3_areaA_pv) + "\r\n"
-		text += u"服务模块3_A点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_3_areaA_uv) + "\r\n"
-		text += u"服务模块3_A点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_3_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块3_A点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_3_areaA_pv) + "\r\n"
-		text += u"服务模块3_A点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_3_areaA_uv) + "\r\n"
-		text += u"服务模块3_A点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_3_areaA_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块3_B点击-早评PV： " + str(PageStatic.stat.recommend_service_3_areaB_pv) + "\r\n"
-		text += u"服务模块3_B点击-早评UV： " + str(PageStatic.stat.recommend_service_3_areaB_uv) + "\r\n"
-		text += u"服务模块3_B点击-早评(未识别)： " + str(PageStatic.stat.recommend_service_3_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块3_B点击-午评PV： " + str(PageStatic.stat.recommend_noon_service_3_areaB_pv) + "\r\n"
-		text += u"服务模块3_B点击-午评UV： " + str(PageStatic.stat.recommend_noon_service_3_areaB_uv) + "\r\n"
-		text += u"服务模块3_B点击-午评(未识别)： " + str(PageStatic.stat.recommend_noon_service_3_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
-		text += u"服务模块3_B点击-晚评PV： " + str(PageStatic.stat.recommend_eve_service_3_areaB_pv) + "\r\n"
-		text += u"服务模块3_B点击-晚评UV： " + str(PageStatic.stat.recommend_eve_service_3_areaB_uv) + "\r\n"
-		text += u"服务模块3_B点击-晚评(未识别)： " + str(PageStatic.stat.recommend_eve_service_3_areaB_khid_unidentification) + "\r\n"
-		text += "================================================================" + "\r\n"
+		text = PageStatic.output.produceText(PageStatic.stat,self.data['p_start'],self.data['p_end'])
 		self.writeInText(text,"morningAnalyse")
+		
 	def getTotalRow(self):
 		data = self.data.copy()
 		data["page.pageNo"] = 1
@@ -226,43 +119,11 @@ class PageStatic(Crawler):
 			result = (self.doSearch(self.requrl,data))['results']
 			self.analseRes(result)
 			self.doWriteCsv(result)
-
+		
 		#计算uv,将khid去重
-		PageStatic.stat.hot_service_uv = len(set(PageStatic.stat.hot_service_khid))	#进入热点页面UV
-		PageStatic.stat.hot_service_unlock_uv = len(set(PageStatic.stat.hot_service_unlock_khid))	#热点点击页面UV
-		PageStatic.stat.hot_service_share_uv =	len(set(PageStatic.stat.hot_service_share_khid))	#进入分享热点页面UV
-		PageStatic.stat.hxaccount_uv =	len(set(PageStatic.stat.hxaccount_khid))	#进入开户页面UV
-		
-		PageStatic.stat.recommend_enter_uv = len(set(PageStatic.stat.recommend_enter_khid))	#早评页面UV
-		PageStatic.stat.recommend_noon_enter_uv = len(set(PageStatic.stat.recommend_noon_enter_khid))	#午评页面UV
-		PageStatic.stat.recommend_eve_enter_uv = len(set(PageStatic.stat.recommend_eve_enter_khid))	#晚评页面UV
-		
-		PageStatic.stat.recommend_service_1_areaA_uv = len(set(PageStatic.stat.recommend_service_1_areaA_khid))	#服务模块1_A点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_1_areaA_uv = len(set(PageStatic.stat.recommend_noon_service_1_areaA_khid))	#服务模块1_A点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_1_areaA_uv = len(set(PageStatic.stat.recommend_eve_service_1_areaA_khid))	#服务模块1_A点击-晚评页面UV
-		
-		PageStatic.stat.recommend_service_1_areaB_uv = len(set(PageStatic.stat.recommend_service_1_areaB_khid))	#服务模块1_A点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_1_areaB_uv = len(set(PageStatic.stat.recommend_noon_service_1_areaB_khid))	#服务模块1_A点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_1_areaB_uv = len(set(PageStatic.stat.recommend_eve_service_1_areaB_khid))	#服务模块1_A点击-晚评页面UV
-		
-		PageStatic.stat.recommend_service_2_areaA_uv = len(set(PageStatic.stat.recommend_service_2_areaA_khid))	#服务模块2_A点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_2_areaA_uv = len(set(PageStatic.stat.recommend_noon_service_2_areaA_khid))	#服务模块2_A点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_2_areaA_uv = len(set(PageStatic.stat.recommend_eve_service_2_areaA_khid))	#服务模块2_A点击-晚评页面UV
-		
-		PageStatic.stat.recommend_service_2_areaB_uv = len(set(PageStatic.stat.recommend_service_2_areaB_khid))	#服务模块2_B点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_2_areaB_uv = len(set(PageStatic.stat.recommend_noon_service_2_areaB_khid))	#服务模块2_B点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_2_areaB_uv = len(set(PageStatic.stat.recommend_eve_service_2_areaB_khid))	#服务模块2_B点击-晚评页面UV
-		
-		PageStatic.stat.recommend_service_3_areaA_uv = len(set(PageStatic.stat.recommend_service_3_areaA_khid))	#服务模块3_A点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_3_areaA_uv = len(set(PageStatic.stat.recommend_noon_service_3_areaA_khid))	#服务模块3_A点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_3_areaA_uv = len(set(PageStatic.stat.recommend_eve_service_3_areaA_khid))	#服务模块3_A点击-晚评页面UV
-		
-		PageStatic.stat.recommend_service_3_areaB_uv = len(set(PageStatic.stat.recommend_service_3_areaB_khid))	#服务模块3_B点击-早评页面UV
-		PageStatic.stat.recommend_noon_service_3_areaB_uv = len(set(PageStatic.stat.recommend_noon_service_3_areaB_khid))	#服务模块3_B点击-午评页面UV
-		PageStatic.stat.recommend_eve_service_3_areaB_uv = len(set(PageStatic.stat.recommend_eve_service_3_areaB_khid))	#服务模块3_B点击-晚评页面UV
-		
+		pageAnalyse.analyse_all_uv(PageStatic.stat)
 		self.outputRes()
-postData = {"p_start":"2017-05-18","p_end":"2017-05-19"}
+postData = {"p_start":"2017-06-08","p_end":"2017-06-09"}
 
 s = PageStatic(postData)
 

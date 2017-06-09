@@ -19,7 +19,7 @@ class Crawler(object):
 		if self.headers:
 			self.opener.addheaders = self.headers
 		response = self.opener.open(request).read()
-		# self.writeInText(response)	#将结果写入txt
+		# self.writeInText(response,"o2okh")	#将结果写入txt
 		res = response.decode('gb18030')
 		resJson = json.loads(res)
 		return resJson
@@ -52,12 +52,8 @@ class Crawler(object):
 		
 if __name__ == "__main__":
 	#test
-	a = {'1':'2'}
-
-		
-	print str(a)
-	pass
 	
-	
+	for i in range(1, 3):
+		print i
 	
 	

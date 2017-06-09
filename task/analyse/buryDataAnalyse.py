@@ -185,4 +185,37 @@ def analyse_service_3_areaB(line,stat_instance):
 			stat_instance.recommend_eve_service_3_areaB_khid_unidentification += 1
 		else:
 			stat_instance.recommend_eve_service_3_areaB_khid.append(line['khid'])
-			
+#分析各种UV
+def analyse_all_uv(stat_instance):
+	stat_instance.hot_service_uv = len(set(stat_instance.hot_service_khid))	#进入热点页面UV
+	stat_instance.hot_service_unlock_uv = len(set(stat_instance.hot_service_unlock_khid))	#热点点击页面UV
+	stat_instance.hot_service_share_uv =	len(set(stat_instance.hot_service_share_khid))	#进入分享热点页面UV
+	stat_instance.hxaccount_uv =	len(set(stat_instance.hxaccount_khid))	#进入开户页面UV
+
+	stat_instance.recommend_enter_uv = len(set(stat_instance.recommend_enter_khid))	#早评页面UV
+	stat_instance.recommend_noon_enter_uv = len(set(stat_instance.recommend_noon_enter_khid))	#午评页面UV
+	stat_instance.recommend_eve_enter_uv = len(set(stat_instance.recommend_eve_enter_khid))	#晚评页面UV
+
+	stat_instance.recommend_service_1_areaA_uv = len(set(stat_instance.recommend_service_1_areaA_khid))	#服务模块1_A点击-早评页面UV
+	stat_instance.recommend_noon_service_1_areaA_uv = len(set(stat_instance.recommend_noon_service_1_areaA_khid))	#服务模块1_A点击-午评页面UV
+	stat_instance.recommend_eve_service_1_areaA_uv = len(set(stat_instance.recommend_eve_service_1_areaA_khid))	#服务模块1_A点击-晚评页面UV
+
+	stat_instance.recommend_service_1_areaB_uv = len(set(stat_instance.recommend_service_1_areaB_khid))	#服务模块1_A点击-早评页面UV
+	stat_instance.recommend_noon_service_1_areaB_uv = len(set(stat_instance.recommend_noon_service_1_areaB_khid))	#服务模块1_A点击-午评页面UV
+	stat_instance.recommend_eve_service_1_areaB_uv = len(set(stat_instance.recommend_eve_service_1_areaB_khid))	#服务模块1_A点击-晚评页面UV
+
+	stat_instance.recommend_service_2_areaA_uv = len(set(stat_instance.recommend_service_2_areaA_khid))	#服务模块2_A点击-早评页面UV
+	stat_instance.recommend_noon_service_2_areaA_uv = len(set(stat_instance.recommend_noon_service_2_areaA_khid))	#服务模块2_A点击-午评页面UV
+	stat_instance.recommend_eve_service_2_areaA_uv = len(set(stat_instance.recommend_eve_service_2_areaA_khid))	#服务模块2_A点击-晚评页面UV
+
+	stat_instance.recommend_service_2_areaB_uv = len(set(stat_instance.recommend_service_2_areaB_khid))	#服务模块2_B点击-早评页面UV
+	stat_instance.recommend_noon_service_2_areaB_uv = len(set(stat_instance.recommend_noon_service_2_areaB_khid))	#服务模块2_B点击-午评页面UV
+	stat_instance.recommend_eve_service_2_areaB_uv = len(set(stat_instance.recommend_eve_service_2_areaB_khid))	#服务模块2_B点击-晚评页面UV
+
+	stat_instance.recommend_service_3_areaA_uv = len(set(stat_instance.recommend_service_3_areaA_khid))	#服务模块3_A点击-早评页面UV
+	stat_instance.recommend_noon_service_3_areaA_uv = len(set(stat_instance.recommend_noon_service_3_areaA_khid))	#服务模块3_A点击-午评页面UV
+	stat_instance.recommend_eve_service_3_areaA_uv = len(set(stat_instance.recommend_eve_service_3_areaA_khid))	#服务模块3_A点击-晚评页面UV
+
+	stat_instance.recommend_service_3_areaB_uv = len(set(stat_instance.recommend_service_3_areaB_khid))	#服务模块3_B点击-早评页面UV
+	stat_instance.recommend_noon_service_3_areaB_uv = len(set(stat_instance.recommend_noon_service_3_areaB_khid))	#服务模块3_B点击-午评页面UV
+	stat_instance.recommend_eve_service_3_areaB_uv = len(set(stat_instance.recommend_eve_service_3_areaB_khid))	#服务模块3_B点击-晚评页面UV
