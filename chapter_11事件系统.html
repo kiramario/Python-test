@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+		<button id="good">click me</button>
+
+	<script>
+		function addEvent(element,type,handler){
+			debugger
+			if(!handler.$$guid){
+				handler.$$guid = addEvent.guid++;
+			}
+			if(!element.$$guid){
+				element.$$guid = addEvent.guid++;
+			}
+			if(!addEvent.handlers[element.$$guid]){
+				addEvent.handlers[element.$$guid] = {}
+			}
+			var handlers = addEvent.handlers[element.$$guid][type]
+			if(!handlers){
+				handlers = addEvent.handlers[element.$$guid][type] = {};
+				if(element["on"+type]){
+					handlers[0] = element["on"+type]
+				}
+			}
+			handlers[handler.$$guid] = handler;
+			element["on"+type] = handleEvent;
+		}
+		addEvent.guid = 1;
+		addEvent.handlers = {};
+
+		function removeEvent(element,type,handler){
+			if(element.events && element.events[type]){
+				delete element.events[type][handler.$$guid];
+			}
+		}
+		function handleEvent(event){
+			var returnValue = true;
+			event = event || fixEvent(window.event);
+			var handlers = this.events[event.type];
+			for (var i in handlers){
+				this.$$handleEvent = handlers[i];
+				if(this.$$handleEvent[event] === false){
+					returnValue = false;
+				}
+			}
+			return returnValue
+		}
+
+		function fixEvent(event){
+			event.preventDefault = fixEvent.preventDefault;
+			event.stopPropagation = fixEvent.stopPropagation;
+			return event;
+		}
+		fixEvent.preventDefault = function(){
+			this.returnValue = false;
+		}
+		fixEvent.stopPropagation = function(){
+			this.cancelBubble = true;
+		}
+
+		var element = document.getElementById("good");
+
+		var handler1 = function(){
+			console.log(element);
+			console.log(handler1)
+		}
+		addEvent(element,"click",handler1)
+		var handler2 = function(){
+			console.log(element);
+			console.log(handler2)
+		}
+		addEvent(element,"dbclick",handler2)
+	</script>
+</body>
+</html>

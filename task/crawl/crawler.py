@@ -19,16 +19,18 @@ class Crawler(object):
 		if self.headers:
 			self.opener.addheaders = self.headers
 		response = self.opener.open(request).read()
-		# self.writeInText(response,"o2okh")	#将结果写入txt
+		# self.writeInText(response,"rawBurydata")	#将结果写入txt
 		res = response.decode('gb18030')
 		resJson = json.loads(res)
 		return resJson
 		
 	def chinese(self,character):
 		if isinstance(character,unicode):
-			return character.encode('gb2312')
+			# print "i am in chinese unicode type"
+			return character.encode('gb18030')
 		else:
-			return character.decode('utf-8').encode('gb2312')
+			# print "i am in chinese utf-8 type"
+			return character.decode('utf-8').encode('gb18030')
 			
 	def writeInText(self,text,name='crawlerRes'):
 		filename="C:\\Users\\Administrator\\Desktop\\" + name + ".txt"
@@ -52,8 +54,5 @@ class Crawler(object):
 		
 if __name__ == "__main__":
 	#test
-	
-	for i in range(1, 3):
-		print i
-	
+	pass
 	
