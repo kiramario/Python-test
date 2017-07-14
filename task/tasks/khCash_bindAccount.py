@@ -1,12 +1,13 @@
-﻿# -*- coding:utf-8 -*-
+﻿# -*- coding: UTF-8 -*-
 from __future__ import division
-import urllib,urllib2,json,datetime,threading,math,Queue
+import math,re,datetime,os,time,threading
 from task.crawl.crawler import Crawler
 from task.output.writeCsv import WriteCsv
+from task.tools.logger import Logger
 
-class KhRegister(Crawler):
-	'this is for search all khinfo from kdcc30data..t_cl_kh'
-	
+# 流水数据
+class BindKH_CASH(Crawler):
+	'''查询绑定资金账号用户的情况'''
 	header = [
 		('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'),
 		('Accept', 'application/json, text/javascript, */*'),
@@ -14,43 +15,39 @@ class KhRegister(Crawler):
 		('Accept-Encoding', 'gzip, deflate'),
 		('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8'),
 		('X-Requested-With', 'XMLHttpRequest'),
-		('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/weixin/gaoshou/kh_regdetail_yyb'),
-		('Cookie', 'JSESSIONID=985B2D149EE2DC48DD2D3DA116C57EDB; HXTGC=TGC-32-YylRVDBRlTK7aMWUBikOMlKVUNUQzOGH2jOZOShy02fGLdWr7i'),
+		('Referer', 'http://hxadmin.hx168.com.cn/hxwwz/s/main/data/jg/rawTransactions'),
+		('Cookie', 'JSESSIONID=E36CC314568113E56A52707F491171B6; HXTGC=TGC-289-z8gEMW13HKAF0k15srX6NN0bV1pDQCs7IlZcH0DBt6IuZFdHBW'),
 		('Host', 'hxadmin.hx168.com.cn')
 	]
 	
 	def __init__(self,data):
-		super(KhRegister,self).__init__(KhRegister.header)
+		super(BindKH_CASH,self).__init__(BindKH_CASH.header)
+		self.logger = Logger()
 		self.data = data
 		self.pageSize = 2000
+		self.itemNo = 1;
+		csvname="C:\\Users\\Administrator\\Desktop\\zjkh_cash.csv"
+		self.csv = WriteCsv(csvname)
 		self.requrl = "http://hxadmin.hx168.com.cn/hxwwz/s/commfuncPaging/execute/42000003/json?p_operator=IV1"
-		csvname = "C:\\Users\\Administrator\\Desktop\\khregister.csv"
-		csvheaders=["khid","wxid","phone","createtime","totalcash","leftcash","khzh","khtype","guishujjr_xm","guishu_jjrdm","dwmc","dwbh","khjl","khjlxm","jgmc"]
-		self.csv = WriteCsv(csvname,csvheaders)
 		self.lock = threading.Lock()
-		self.queue = Queue.Queue()
+		#计算时间
 		begin = datetime.datetime.now()
 		self.run()
 		end = datetime.datetime.now()
-		print "begin: {0}, end: {1}, totalTime: {2}".format(begin,end,end-begin)
-		
-			
-	def getTotalRow(self):
-		data = self.data.copy()
-		data["page.pageNo"] = 1
-		data['page.pageSize'] = 1
-		result = self.doSearch(self.requrl,data)
-		totalRow = result["totalRow"]
-		totalIndex = int((totalRow+self.pageSize)/self.pageSize)
-		print u"查询到总流水的记录数：", totalRow
-		return totalIndex
-		
+		print "begin: {0}, \r\nend: {1} ".format(begin,end)
+		m, s = divmod((end-begin).total_seconds(), 60)
+		h, m = divmod(m, 60)
+		print ("{3}: {0:02}:{1:02}:{2:02}".format(h, m, s,"totalTime"))
+	
+		# print " {0}".format((end-begin).total_seconds())
+
+
 		
 	def run(self):
 		index = self.getTotalRow()
 		threadTaskNum = 20
+		loopTime = 1
 		loopTime = int(math.ceil(index/threadTaskNum))
-		# loopTime=1
 		for i in range(loopTime):
 			threadsTasks = []
 			for j in range(1,threadTaskNum+1):
@@ -65,17 +62,21 @@ class KhRegister(Crawler):
 				
 			for t in threadsTasks:
 				t.join()
-			
+	
+		
 	def mutiple_thread(self,requrl,data):
 		result = (self.doSearch(requrl,data))['results']
 		self.lock.acquire()
-		if len(result) == 0:
-			print data["page.pageNo"]
-		else:
-			self.csv.doWriteCsv(result)
+		# if len(result) == 0:
+			# self.logger.log(str(data["page.pageNo"]) + ': is empty')
+		# else:
+			# self.csv.doWriteCsv(result)
 		self.lock.release()
-
-
+		
+		
 if __name__ == "__main__":
-	postData = {}
-	khregister = KhRegister(postData)
+	postData = {"p_bstr_b":"1"}
+	s = BindKH_CASH(postData)
+
+	
+
